@@ -1,4 +1,4 @@
-<img width="1005" height="386" alt="image" src="https://github.com/user-attachments/assets/d8c26d95-dbb8-40d2-bd4c-23fb03a486e6" /># stats220
+# stats220
 ## different level of header!
 ### Another one!
 
