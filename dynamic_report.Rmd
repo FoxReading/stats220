@@ -1,0 +1,89 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+body {
+  font-family: "Times New Roman", serif;
+  text-align: center;
+  background-color: #eef7ff;
+
+}
+
+h1{
+text-align: center;
+text-decoration: underline;
+}
+
+h2{
+text-align: center;
+text-decoration: underline;
+}
+
+img{
+  display: block;
+  margin: auto;
+  width: 50%;
+}
+
+
+```
+
+# The effect of hunger on the speed of aiming
+This study is tracking the affect that hunger has on the speed of aiming using the aim trainer on Human Benchmark. The form was to be completed 2 times every time the subject was going to eat, once before, and once after.
+
+
+```{r}
+library(tidyverse)
+# reading csv
+logged_data.df <- read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRkJgjwYTm6WlE0DzkXeaLbayxUL80OZ3k5HTGtOnFZpxy2V_54C-Qb_JTSXnyVVXxmJZ6FndIHKnmr/pub?output=csv")
+
+# renaming variables
+latest_data.df <- logged_data.df %>%
+  rename(recently_eaten = 2,
+         how_hungry = 3,
+         aim_speed = 4)
+
+#summary values
+# maximum and minimum aim speed
+max_speed <- max(latest_data.df$aim_speed)
+min_speed <- min(latest_data.df$aim_speed)
+# mean of values in aim speed variable
+mean_speed <- mean(latest_data.df$aim_speed)
+#how many values
+length <- length(latest_data.df$aim_speed)
+
+```
+## Summary Statistics
+The mean aim speed is `r round(mean_speed, 2) `.
+
+The minimum recorded aim speed is `r min_speed` and the maximum recorded aim speed is `r max_speed`. This gives a range of `r round(max_speed - min_speed, 2)`.
+
+There are `r length` values recorded in this study.
+
+# Bar Charts
+## Aim speed bar chart
+```{r}
+# aim speed bar chart
+ggplot(data = latest_data.df) +
+  geom_bar(aes(x = aim_speed),
+           fill = "#0000FF")
+```
+
+The bar chart shows the range of aim speeds that were recorded during the study
+
+## Aim speed based on whether or not someone has eaten
+```{r}
+# aim speed based on eaten recently or not
+ggplot(data = latest_data.df) +
+  geom_bar(aes(x = aim_speed, fill = recently_eaten))
+```
+
+The bar chart shows the recorded aim speeds colored based on whether or not the subject had recently eaten. We can see that when the subject had eaten in the last 30 minutes before completing the form, their aim speeds tend to be lower than when they hadn't eaten recently.
+
